@@ -1,0 +1,5 @@
+#Bo qua thu muc database noi bo
+app/mysql_data/
+#bo qua file rac he dieu hanh
+.DS_Store
+Thumbs.db
