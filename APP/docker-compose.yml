@@ -1,0 +1,49 @@
+version: '3.3'
+
+services:
+  web:
+    build:
+      context: .
+    container_name: php_web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./code:/var/www/html
+    depends_on:
+      - mysql2
+    networks:
+      - web-network
+
+  mysql2:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: '123456'
+      MYSQL_DATABASE: 'shopp'
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - web-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin_gui
+    environment:
+      PMA_HOST: mysql2
+      PMA_PORT: 3306
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql2
+    networks:
+      - web-network
+
+networks:
+  web-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
